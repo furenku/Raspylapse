@@ -12,28 +12,29 @@ import picamera
 import datetime
 import argparse
 
-def main(captureTime=1.0, movieDuration=60, framerate=30, resolution=(1280,720),
+def main(captureTime=528.0, movieDuration=60, framerate=30, resolution=(1280,720),
         quality=85, startTime=None):
     """
     Record jpeg images to a /time-lapse folder based on the captureTime and movieDuration
     values, + any extra passed in args.  Saved files will overwrite any previous
     files left in that folder.
 
-    Note, I've been unable to get any other image format types to work, it locks
-    up the system with no errors.
-
     Parameters:
     captureTime : float : Default 1.0 : How long should te recording go on for in HOURS.
+
     movieDuration : int : Default 60 : How long should the final movie last in SECONDS.
         For example, if you want the resultant movie to be 1 minute, that = 60 sec.
-        This tool doesn't make a movie, but it's to help you make one later.
+
     framerate : int : Default 30 : Expected frames per second of the movie
         generated from these frames.  Used to calculate how often to take a pic.
+
     resolution : (x, y) : Default (1280, 720) : The resolution to capture at,
         default is 720p.  The cam can go higher of course, but this tends to fill
         up my sd card.
+
     quality : int : Default 85 : If the format is 'jpeg', set the quality, from
         1 to 100.
+        
     startTime : datetime.datetime / None : If not none, an instance of a datetime.datetime
         class, specifying when to start the recording.
     """

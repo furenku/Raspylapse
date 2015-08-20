@@ -34,7 +34,7 @@ def main(captureTime=528.0, movieDuration=60, framerate=30, resolution=(1280,720
 
     quality : int : Default 85 : If the format is 'jpeg', set the quality, from
         1 to 100.
-        
+
     startTime : datetime.datetime / None : If not none, an instance of a datetime.datetime
         class, specifying when to start the recording.
     """
@@ -46,7 +46,7 @@ def main(captureTime=528.0, movieDuration=60, framerate=30, resolution=(1280,720
     interval = float(captureTimeSec) / movieFrames
     totalPics = int(captureTimeSec / interval)
 
-    timelapseDir = "time-lapse"
+    timelapseDir = "/var/www/time-lapse"
     if not os.path.isdir(timelapseDir):
         os.mkdir(timelapseDir)
 

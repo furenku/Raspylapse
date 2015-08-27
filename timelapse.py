@@ -1,11 +1,5 @@
 #!/user/bin/env python
-"""
-timelapse.py
 
-
-Code was based around this example:
-http://picamera.readthedocs.org/en/release-1.0/recipes1.html#capturing-timelapse-sequences
-"""
 import os
 import time
 import picamera
@@ -46,9 +40,14 @@ def main(captureTime=528.0, movieDuration=60, framerate=30, resolution=(1280,720
     interval = float(captureTimeSec) / movieFrames
     totalPics = int(captureTimeSec / interval)
 
-    timelapseDir = "/var/www/time-lapse"
+    timelapseDir = "/home/user/path/to/Raspylapse/generated_images"
+
+    # en mi compu: /home/furenku/chamba/less/raspgif/Raspylapse/generated_images
+
     if not os.path.isdir(timelapseDir):
         os.mkdir(timelapseDir)
+
+    print len([name for name in os.listdir(timelapseDir) if os.path.isfile(os.path.join(timelapseDir, name))])
 
     if startTime:
         now = datetime.datetime.now()
@@ -62,6 +61,11 @@ def main(captureTime=528.0, movieDuration=60, framerate=30, resolution=(1280,720
                 return
 
     print "Time-lapse begin! : Take a picture every %s seconds, for %s hours.  That's %s pictures!"%(interval, captureTime, totalPics)
+    
+    imagesGenerated = 0
+    
+    os.system("convert generated_images/*.jpeg -delay 20 -loop 0 html/gif/timelapse.gif")
+
     try:
         with picamera.PiCamera() as camera:
             print "Starting camera..."
@@ -72,11 +76,18 @@ def main(captureTime=528.0, movieDuration=60, framerate=30, resolution=(1280,720
             time.sleep(2)
             startT = time.time()
             print "Capture begin:"
-            for filename in camera.capture_continuous('%s/timelapse{counter:04d}.jpeg'% (timelapseDir)):
+            for filename in camera.capture_continuous('%s/timelapse{timestamp}.jpeg'% (timelapseDir)):
                 print('\tCaptured %s' % filename)
                 time.sleep(interval)
                 timeNow = time.time()
                 elapsedTime = timeNow - startT
+                
+                imagesGenerated++
+
+                if imagesGenerated % 5 == 0 :
+                    os.system("convert generated_images/*.jpeg -delay 20 -loop 0 html/gif/timelapse.gif")
+
+
                 if elapsedTime >= captureTimeSec:
                     break
                 else:
@@ -85,6 +96,8 @@ def main(captureTime=528.0, movieDuration=60, framerate=30, resolution=(1280,720
     except KeyboardInterrupt:
         print "Capture exited early..."
         return
+
+    
     print "Capture complete!"
 
 # If executed from the command line:

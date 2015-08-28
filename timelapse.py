@@ -82,7 +82,7 @@ def main(captureTime=528.0, movieDuration=60, framerate=30, resolution=(1280,720
                 timeNow = time.time()
                 elapsedTime = timeNow - startT
                 
-                imagesGenerated++
+                imagesGenerated=imagesGenerated+1
 
                 if imagesGenerated % 5 == 0 :
                     os.system("convert generated_images/*.jpeg -delay 20 -loop 0 html/gif/timelapse.gif")
